@@ -32,15 +32,17 @@ export const useRipconLevels = () => {
     },
   ]);
 
-  const condition = ref(5);
+  const { config } = useConfig();
+
+  const condition = computed(() => config.value.condition);
 
   const level = computed(() =>
     levels.value.find((l) => l.id === condition.value)
   );
 
   const link = computed(() => ({
-    url: "https://www.npr.org/2026/01/13/nx-s1-5413219/scott-adams-dilbert-dies",
-    text: "Scott Adams, the controversial cartoonist behind 'Dilbert', dies at 68",
+    url: config.value.linkUrl,
+    text: config.value.linkText,
   }));
 
   return {

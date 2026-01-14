@@ -8,4 +8,15 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  runtimeConfig: {
+    public: {
+      configKey: "",
+      refreshInterval: "",
+    },
+  },
+  app: {
+    head: {
+      title: "RIP BOZO READINESS CONDITION",
+    },
+  },
 });
