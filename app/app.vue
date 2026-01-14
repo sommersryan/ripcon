@@ -46,7 +46,9 @@ const currentClass = computed(() => {
     ]"
   >
     <div class="flex flex-col items-center">
-      <h1 class="text-9xl text-center">RIPCON {{ condition }}</h1>
+      <h1 class="text-6xl xs:text-9xl text-center font-bold mb-2">
+        RIPCON {{ condition }}
+      </h1>
       <h2
         :class="['text-3xl text-center mb-8', { 'text-8xl': condition === 1 }]"
       >
