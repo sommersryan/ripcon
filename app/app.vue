@@ -1,10 +1,13 @@
 <script setup lang="js">
 const {
-  levels,
   condition,
   level,
   link
 } = useRipconLevels()
+
+const { refreshConfig } = useConfig()
+
+
 
 const classes = computed(() => ({
   5: ['bg-blue-700', 'text-white'],
@@ -23,15 +26,38 @@ const incrementClassId = () => {
   classId.value++
 }
 
-if(condition.value === 1) {
-  setInterval(incrementClassId, 100)
-}
+const classIdInterval = ref(null)
+
+watch(condition, (val) => {
+  if(val === 1) {
+    classIdInterval.value = setInterval(incrementClassId, 100)
+  }
+  else {
+    if (classIdInterval.value) {
+      clearInterval(classIdInterval.value)
+    }
+  }
+}, { immediate: true })
+
+onWatcherCleanup(() => {
+  if (classIdInterval.value) {
+    clearInterval(classIdInterval.value)
+  }
+})
 
 const currentClass = computed(() => {
   if(condition.value === 1) {
     return classes.value[classId.value]
   }
   return classes.value[condition.value]
+})
+
+const runtimeConfig = useRuntimeConfig()
+
+onMounted(async () => {
+  await refreshConfig()
+  const refreshInterval = setInterval(refreshConfig, +runtimeConfig.public.refreshInterval)
+  onBeforeUnmount(() => clearInterval(refreshInterval))
 })
 </script>
 
@@ -40,13 +66,16 @@ const currentClass = computed(() => {
     class="hidden bg-blue-700 text-white text-black bg-emerald-500 bg-yellow-300 bg-red-600"
   ></div>
   <div
+    v-if="condition !== null && condition !== undefined"
     :class="[
       'flex justify-center items-center h-screen w-screen px-2',
       ...currentClass,
     ]"
   >
     <div class="flex flex-col items-center">
-      <h1 class="text-6xl xs:text-9xl text-center font-bold mb-2">
+      <h1
+        class="text-7xl sm:text-9xl md:text-[180px] text-center font-bold mb-2"
+      >
         RIPCON {{ condition }}
       </h1>
       <h2
