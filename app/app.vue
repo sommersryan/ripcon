@@ -30,7 +30,7 @@ const classIdInterval = ref(null)
 
 watch(condition, (val) => {
   if(val === 1) {
-    classIdInterval.value = setInterval(incrementClassId, 100)
+    classIdInterval.value = setInterval(incrementClassId, 540)
   }
   else {
     if (classIdInterval.value) {
@@ -68,7 +68,7 @@ onMounted(async () => {
   <div
     v-if="condition !== null && condition !== undefined"
     :class="[
-      'flex justify-center items-center h-screen w-screen px-2',
+      'flex justify-center items-center h-screen w-screen px-2 transition-all duration-500',
       ...currentClass,
     ]"
   >
@@ -83,9 +83,25 @@ onMounted(async () => {
       >
         {{ level.actions }}
       </h2>
-      <a class="text-center" :href="link.url" target="_blank">
+      <a
+        class="text-center"
+        :href="link.url"
+        target="_blank"
+        v-if="condition !== 1"
+      >
         🔗 {{ link.text }}
       </a>
+      <iframe
+        v-else
+        width="600"
+        height="1100"
+        src="https://www.youtube.com/embed/qtxq5UyW-bM?si=XoXvgz2EZqnTyQKO?autoplay=1"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
     </div>
     <div class="fixed bottom-5 right-5">
       <a
